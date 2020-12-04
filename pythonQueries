@@ -1,0 +1,44 @@
+#/usr/bin/python
+
+import cx_Oracle
+import pandas as pd
+
+#"""
+#Some quick start guides:
+#* cx_Oracle 8: https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
+#* pandas: https://pandas.pydata.org/pandas-docs/stable/user_guide/10min.html
+#"""
+# TODO change path of Oracle Instant Client to yours
+cx_Oracle.init_oracle_client(lib_dir = "./instantclient_19_8")
+dsn = cx_Oracle.makedsn(host='lawtech.law.miami.edu', port=1521, sid='CSC423')
+
+
+# TODO change credentials
+# Connect as user "user" with password "mypass" to the "CSC423" service
+# running on lawtech.law.miami.edu
+connection = cx_Oracle.connect(user="user", password="mypass", dsn=dsn)
+cursor = connection.cursor()
+cursor.execute("""
+    SELECT *
+    FROM TUTOR
+   """)
+
+# get column names from cursor
+columns = [c[0] for c in cursor.description]
+# fetch data
+data = cursor.fetchall()
+# bring data into a pandas dataframe for easy data transformation
+df = pd.DataFrame(data, columns = columns)
+print(df) # examine
+print(df.columns)
+# print(df['FIRST_NAME']) # example to extract a column
+
+print(df['STREET'])
+
+print(df.sort_values(by = 'LNAME'))
+
+print(df.mean())
+
+print(df.tail(4))
+
+print(df.to_numpy())
