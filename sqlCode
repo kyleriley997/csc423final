@@ -1,0 +1,65 @@
+CREATE TABLE Tutor (
+    tutorID INT NOT NULL PRIMARY KEY,
+    fName VARCHAR(300),
+    lName VARCHAR(300),
+    street VARCHAR(300),
+    city VARCHAR(300),
+    zipCode INT,
+    phoneNum INT,
+    coursesTaught VARCHAR(500)
+    );
+    
+CREATE TABLE Student (
+    studentID INT NOT NULL PRIMARY KEY,
+    fName VARCHAR(300),
+    lName VARCHAR(300),
+    street VARCHAR(300),
+    city VARCHAR(300),
+    zipCode INT,
+    phoneNum INT
+    );
+    
+CREATE TABLE Course (
+    courseName VARCHAR(300) NOT NULL PRIMARY KEY,
+    length INT CHECK (length BETWEEN '7' AND '53'),
+    tutorID INT NOT NULL,
+    FOREIGN KEY (tutorID) REFERENCES Tutor(tutorID) ON DELETE CASCADE
+    );
+    
+CREATE TABLE Course_Details (
+    sectionID FLOAT NOT NULL PRIMARY KEY,
+    courseName VARCHAR(300) NOT NULL,
+    TOD VARCHAR(300) CHECK(TOD IN('Morning','Evening')),
+    DOW VARCHAR(300) CHECK(DOW IN('Monday','Tuesday','Wednesday','Thursday','Friday')),
+    startMonth VARCHAR(300),
+    endMonth VARCHAR(300),
+    numPlaces INT CHECK (numPlaces < 101),
+    FOREIGN KEY (courseName) REFERENCES Course(courseName) ON DELETE CASCADE
+    );
+
+DELETE FROM Tutor;
+SET DEFINE OFF;    
+INSERT INTO Tutor VALUES ('1001', 'John', 'Franklin', 'Ponce Ave', 'Atlanta', '30305', '4048559765', 'Spanish Level 1');
+INSERT INTO Tutor VALUES ('1002', 'William', 'Saint', 'Sunset Dr', 'Atlanta', '30305', '6789483728', 'French Level 1, French Level 2');
+INSERT INTO Tutor VALUES ('1003', 'Denzel', 'Johnson', 'Peachtree St', 'Atlanta', '30305', '7709003245', 'Introduction to Digging Up Your Ancestors');
+INSERT INTO Tutor VALUES ('1004', 'Reid', 'Thompson', 'MLK Blvd', 'Atlanta', '30305', '4047725643', 'Italian Level 1, Italian Level 2, Italian Level 3');
+INSERT INTO Tutor VALUES ('1005', 'Jackie', 'Valez', 'University Dr', 'Atlanta', '30305', '4040219879', 'Spanish Level 2');
+
+INSERT INTO Student VALUES ('2001', 'Riley', 'Stewart', 'Church St', 'Atlanta', '30305', '4047294729');
+INSERT INTO Student VALUES ('2002', 'Chad', 'Jones', 'Paces Ferry Rd', 'Atlanta', '30305', '4047452638');
+INSERT INTO Student VALUES ('2003', 'Kyle', 'Luck', 'Northside Pkwy', 'Atlanta', '30305', '4040182920');
+INSERT INTO Student VALUES ('2004', 'Cory', 'Brown', 'Turner Dr', 'Atlanta', '30305', '4042830926');
+INSERT INTO Student VALUES ('2005', 'Stacy', 'Walker', 'Circle Dr', 'Atlanta', '30305', '4043749902');
+
+INSERT INTO Course VALUES ('Spanish Level 1', '25', '1001');
+INSERT INTO Course VALUES ('Spanish Level 2', '25', '1005');
+INSERT INTO Course VALUES ('Introduction to Digging Up Your Ancestors', '8', '1003');
+INSERT INTO Course VALUES ('French Level 2', '25', '1002');
+INSERT INTO Course VALUES ('Italian Level 3', '25', '1004');
+
+INSERT INTO Course_Details VALUES ('3001.1', 'Spanish Level 1', 'Evening','Monday', 'November', 'April', '25');
+INSERT INTO Course_Details VALUES ('3001.2', 'Spanish Level 1', 'Morning', 'Wednesday', 'August', 'Jauary', '35');
+INSERT INTO Course_Details VALUES ('3111.1', 'Introduction to Digging Up Your Ancestors', 'Evening', 'Tuesday',  'May', 'July', '10');
+INSERT INTO Course_Details VALUES ('3111.3', 'Introduction to Digging Up Your Ancestors', 'Evening', 'Friday',  'March', 'May', '20');
+INSERT INTO Course_Details VALUES ('3225.3', 'Italian Level 3', 'Morning', 'Thursday',  'January', 'June', '75');
+
